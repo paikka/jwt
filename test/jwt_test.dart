@@ -17,7 +17,7 @@ void main() {
       builder = new JWTBuilder();
       builder
         ..issuer = 'https://mycompany.com'
-        ..audience = 'people'
+        ..audience = ['people']
         ..issuedAt = now
         ..expiresAt = now.add(new Duration(seconds: 10))
         ..notBefore = now.add(new Duration(seconds: 5))
@@ -86,7 +86,7 @@ void main() {
       var token = builder.getToken();
       expect(token, const TypeMatcher<JWT>());
       expect(token.issuer, equals('https://mycompany.com'));
-      expect(token.audience, equals('people'));
+      expect(token.audience.contains('people'), equals(true));
       expect(token.issuedAt, equals(_secondsSinceEpoch(now)));
       expect(token.expiresAt, equals(_secondsSinceEpoch(now) + 10));
       expect(token.notBefore, equals(_secondsSinceEpoch(now) + 5));
