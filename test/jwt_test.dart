@@ -95,6 +95,20 @@ void main() {
       expect(token.algorithm, equals('none'));
     });
 
+    test('it supports all standard claims when the aud is string', () {
+      builder.audience = 'people';
+      var token = builder.getToken();
+      expect(token, const TypeMatcher<JWT>());
+      expect(token.issuer, equals('https://mycompany.com'));
+      expect(token.audience, contains('people'));
+      expect(token.issuedAt, equals(_secondsSinceEpoch(now)));
+      expect(token.expiresAt, equals(_secondsSinceEpoch(now) + 10));
+      expect(token.notBefore, equals(_secondsSinceEpoch(now) + 5));
+      expect(token.id, equals('identifier'));
+      expect(token.subject, equals('subj'));
+      expect(token.algorithm, equals('none'));
+    });
+
     test('it prevents setting standard claims using setClaim', () {
       expect(() => builder.setClaim('iss', 'bad'), throwsArgumentError);
     });
